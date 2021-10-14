@@ -1,10 +1,14 @@
 package com.noetic.client;
 
+import com.noetic.client.states.LoginScreenState;
+import com.noetic.client.states.State;
 import com.noetic.client.utils.Configuration;
 import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class UODisplay {
@@ -18,6 +22,10 @@ public class UODisplay {
     private int width = Configuration.windowWidth;
     private int height = Configuration.windowHeight;
     private Dimension dimension;
+
+    private List<State> states = new ArrayList<>();
+    private State activeState;
+    private int intializedStates = 0;
 
     public UODisplay(Canvas canvas) {
         this.canvas = canvas;
@@ -38,8 +46,32 @@ public class UODisplay {
         frame.setLocationRelativeTo(null);
         //todo set input listeners to canvas
         canvas.requestFocus();
+
+        addState(new LoginScreenState());
+        activeState = states.get(0);
         frame.setVisible(true);
     }
 
+    private void addState(State state) {
+        for (State s : states) {
+            if (s.getId() == state.getId()) {
+                System.err.println("Unable to add game-state: already exists.");
+                return;
+            }
+        }
+        states.add(state);
+    }
 
+    public void initStatesOnNewThread() {
+        do {
+            for (State state : states) {
+                state.init(this);
+                intializedStates++;
+            }
+        } while (intializedStates != states.size());
+    }
+
+    public boolean haveStatesInitialized() {
+        return intializedStates == states.size();
+    }
 }

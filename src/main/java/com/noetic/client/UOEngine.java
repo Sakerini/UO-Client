@@ -1,6 +1,9 @@
 package com.noetic.client;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferStrategy;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +21,12 @@ public class UOEngine implements Runnable{
     public UOEngine() {
         canvas = new Canvas();
         display = new UODisplay(canvas);
+
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                display.initStatesOnNewThread();
+            }
+        });
 
     }
 
@@ -81,5 +90,21 @@ public class UOEngine implements Runnable{
     }
 
     private void render() {
+        BufferStrategy bs = canvas.getBufferStrategy();
+        if (Objects.isNull(bs)) {
+            canvas.createBufferStrategy(3);
+            return;
+        }
+
+        Graphics2D graphics = (Graphics2D)bs.getDrawGraphics();
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, display.getWidth(), display.getHeight());
+
+        /** Make sure we've initialized states before trying to render. **/
+        if (display.haveStatesInitialized())
+            display.getActiveState().render(this, display, graphics);
+
+        graphics.dispose();
+        bs.show();
     }
 }
