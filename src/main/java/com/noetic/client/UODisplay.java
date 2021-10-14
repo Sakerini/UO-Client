@@ -1,5 +1,6 @@
 package com.noetic.client;
 
+import com.noetic.client.utils.Configuration;
 import lombok.Getter;
 
 import javax.swing.*;
@@ -7,15 +8,15 @@ import java.awt.*;
 
 @Getter
 public class UODisplay {
-    private final String title = "UO";
-    private final String version = "v0.0.1 (development)";
+    private final String title = Configuration.appTitle;
+    private final String version = Configuration.appVersion;
 
-    private JFrame frame;
-    private Canvas canvas;
+    private final JFrame frame;
+    private final Canvas canvas;
     private Font font;
 
-    private int width = 1280;
-    private int height = 720;
+    private int width = Configuration.windowWidth;
+    private int height = Configuration.windowHeight;
     private Dimension dimension;
 
     public UODisplay(Canvas canvas) {
