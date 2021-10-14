@@ -1,5 +1,6 @@
 package com.noetic.client;
 
+import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,11 +11,23 @@ public class UOEngine implements Runnable{
     private double delta;
     private int renderedFps;
 
-    @Override
-    public void run() {
-        isRunning = true;
+    private Canvas canvas;
+    private UODisplay display;
+    private Thread thread;
 
+    public UOEngine() {
+        canvas = new Canvas();
+        display = new UODisplay(canvas);
+
+    }
+
+    @Override
+    public synchronized void run() {
+        isRunning = true;
+        thread = new Thread(this, display.getTitle() + "_thread");
+        thread.start();
         Logger.getLogger("server").log(Level.INFO, "Engine is started");
+
         long lastTime = System.nanoTime();
         double nsPerTick = 1000000000D / FPS;
 
