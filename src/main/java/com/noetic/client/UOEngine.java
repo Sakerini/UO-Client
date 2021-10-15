@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class UOEngine implements Runnable{
+public class UOEngine implements Runnable {
 
     public static final int FPS = 60;
     private boolean isRunning = false;
@@ -33,7 +33,7 @@ public class UOEngine implements Runnable{
     @Override
     public synchronized void run() {
         isRunning = true;
-        thread = new Thread(this, display.getTitle() + "_thread");
+        thread = new Thread(this, UODisplay.title + "_thread");
         thread.start();
         Logger.getLogger("server").log(Level.INFO, "Engine is started");
 
@@ -86,7 +86,11 @@ public class UOEngine implements Runnable{
      * Run game ticks.
      */
     private void tick() {
+        display.getInput().poll();
 
+        if (display.haveStatesInitialized()) {
+            display.getActiveState().tick(this, display,delta);
+        }
     }
 
     private void render() {
@@ -96,7 +100,7 @@ public class UOEngine implements Runnable{
             return;
         }
 
-        Graphics2D graphics = (Graphics2D)bs.getDrawGraphics();
+        Graphics2D graphics = (Graphics2D) bs.getDrawGraphics();
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, display.getWidth(), display.getHeight());
 

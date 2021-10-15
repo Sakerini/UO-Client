@@ -1,5 +1,6 @@
 package com.noetic.client;
 
+import com.noetic.client.handlers.InputHandler;
 import com.noetic.client.states.LoginScreenState;
 import com.noetic.client.states.State;
 import com.noetic.client.utils.Configuration;
@@ -7,13 +8,14 @@ import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 public class UODisplay {
-    private final String title = Configuration.appTitle;
-    private final String version = Configuration.appVersion;
+    public final static String title = Configuration.appTitle;
+    public final static String version = Configuration.appVersion;
 
     private final JFrame frame;
     private final Canvas canvas;
@@ -26,6 +28,8 @@ public class UODisplay {
     private List<State> states = new ArrayList<>();
     private State activeState;
     private int intializedStates = 0;
+
+    private InputHandler input;
 
     public UODisplay(Canvas canvas) {
         this.canvas = canvas;
@@ -44,12 +48,21 @@ public class UODisplay {
 
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
-        //todo set input listeners to canvas
+
+        input = new InputHandler();
+        canvas.addKeyListener(input);
+        canvas.addMouseListener(input);
+        canvas.addMouseMotionListener(input);
+        canvas.setFocusTraversalKeysEnabled(false);
         canvas.requestFocus();
 
         addState(new LoginScreenState());
         activeState = states.get(0);
         frame.setVisible(true);
+    }
+
+    public void addKeyListener(KeyListener listener) {
+        canvas.addKeyListener(listener);
     }
 
     private void addState(State state) {
@@ -73,5 +86,9 @@ public class UODisplay {
 
     public boolean haveStatesInitialized() {
         return intializedStates == states.size();
+    }
+
+    public void exit() {
+        System.exit(0);
     }
 }
