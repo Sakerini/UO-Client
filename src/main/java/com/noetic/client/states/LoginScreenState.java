@@ -6,6 +6,7 @@ import com.noetic.client.gui.UOButton;
 import com.noetic.client.gui.UOTextField;
 import com.noetic.client.handlers.InputHandler;
 import com.noetic.client.utils.Drawer;
+import com.noetic.client.utils.NetworkUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -63,6 +64,8 @@ public class LoginScreenState extends State {
             String password = passwordTextField.getText().trim();
             usernameTextField.setText("");
             passwordTextField.setText("");
+
+            NetworkUtil.authorize(username, password);
         });
 
         quitButton = new UOButton("Quit");
