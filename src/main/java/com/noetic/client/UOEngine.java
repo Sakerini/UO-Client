@@ -1,5 +1,8 @@
 package com.noetic.client;
 
+import com.noetic.client.handlers.NotificationHandler;
+import com.noetic.client.utils.NetworkUtil;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -107,6 +110,8 @@ public class UOEngine implements Runnable {
         /** Make sure we've initialized states before trying to render. **/
         if (display.haveStatesInitialized())
             display.getActiveState().render(this, display, graphics);
+
+        NotificationHandler.handle(display.getActiveState().getId(), this, display, graphics);
 
         graphics.dispose();
         bs.show();

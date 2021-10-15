@@ -19,6 +19,9 @@ public class NetworkUtil {
     public static AuthConnection getAuthConnection() {
         return authConnection;
     }
+    public static void setAuthConnection(AuthConnection connection) {
+        authConnection = connection;
+    }
 
     public static void initHandlers() {
         handlers.put("sc_login", new LoginHandler());

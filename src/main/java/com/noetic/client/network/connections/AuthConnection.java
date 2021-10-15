@@ -45,14 +45,17 @@ public class AuthConnection {
     public void authorize(String username, String password) {
         new Thread("auth") {
             public void run() {
+                status = AuthStatus.CONNECTING;
                 client.start();
                 try {
                     client.connect(5000,"127.0.0.1", 6770);
+                    status = AuthStatus.AUTHENTICATING;
                     LoginCSPacket packet = new LoginCSPacket();
                     packet.username = username;
                     packet.password = hashPassword(password);
                     client.sendTCP(packet);
                 } catch (IOException ex) {
+                    status = AuthStatus.CONNECTION_FAILED;
                     Logger.getLogger("client").log(Level.WARNING, "{0}", ex.getMessage());
                 }
             }
