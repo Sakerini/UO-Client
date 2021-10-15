@@ -3,10 +3,13 @@ package com.noetic.client.network.connections;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.noetic.client.enums.AuthStatus;
 import com.noetic.client.network.Network;
 import com.noetic.client.network.handlers.PacketHandler;
 import com.noetic.client.network.packets.APacket;
 import com.noetic.client.network.packets.LoginCSPacket;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 
 import java.io.IOException;
@@ -15,8 +18,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Getter
+@Setter
 public class AuthConnection {
     private Client client = new Client();
+    private AuthStatus status;
 
     public AuthConnection(Map<String, PacketHandler> handlers) {
         Network.registerLib(client.getKryo());

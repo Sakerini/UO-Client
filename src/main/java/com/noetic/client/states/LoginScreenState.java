@@ -72,6 +72,8 @@ public class LoginScreenState extends State {
         quitButton.setLocation(display.getWidth() - quitButton.getWidth() - 25, display.getHeight() - quitButton.getHeight() - 45);
         quitButton.addActionListener(e ->
                 display.exit());
+
+        NetworkUtil.initHandlers();
     }
 
     @Override
