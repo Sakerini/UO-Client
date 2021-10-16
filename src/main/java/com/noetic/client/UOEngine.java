@@ -104,7 +104,7 @@ public class UOEngine implements Runnable {
         }
 
         Graphics2D graphics = (Graphics2D) bs.getDrawGraphics();
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, display.getWidth(), display.getHeight());
 
         /** Make sure we've initialized states before trying to render. **/

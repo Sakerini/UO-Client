@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -34,16 +35,14 @@ public class UOButton implements UOWidget {
     private ActionListener actionListener;
 
     public UOButton(String text) {
-        try {
-            enabledButtonImage = ImageIO.read(getClass().getResourceAsStream("/ui/button.png"));
-            disabledButtonImage = ImageIO.read(getClass().getResourceAsStream("/ui/button_disabled.png"));
-        } catch (FileNotFoundException ex) {
-            System.err.println("Could not find the button image specified.");
-        } catch (IOException ex) {
-            System.err.println("Unable to read the button image path: "+ex.getMessage());
+        if (Objects.nonNull(enabledButtonImage)) {
+            width = enabledButtonImage.getWidth();
+            height = enabledButtonImage.getHeight();
         }
-        width = enabledButtonImage.getWidth();
-        height = enabledButtonImage.getHeight();
+        else {
+            width = text.length() * 6;
+            height = 10;
+        }
         this.text = text;
     }
 
@@ -82,7 +81,7 @@ public class UOButton implements UOWidget {
             if (hovering)
                 graphics.setColor(Color.WHITE);
             else
-                graphics.setColor(new Color(223, 195, 15));
+                graphics.setColor(Color.BLACK);
         } else
             graphics.setColor(Color.gray);
         Drawer.drawCenteredString(text, x, y, width, height, graphics);
@@ -94,6 +93,12 @@ public class UOButton implements UOWidget {
         this.y = y;
 
         bounds = new Rectangle(x, y, width, height);
+    }
+
+    public void setEnabledButtonImage(BufferedImage enabledButtonImage) {
+        this.enabledButtonImage = enabledButtonImage;
+        width = enabledButtonImage.getWidth();
+        height = enabledButtonImage.getHeight();
     }
 
     public void addActionListener(ActionListener actionListener) {

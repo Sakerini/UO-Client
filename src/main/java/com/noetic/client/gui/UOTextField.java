@@ -47,7 +47,7 @@ public class UOTextField implements UOWidget, KeyListener {
         if (Objects.nonNull(backgroundColor))
             graphics.setColor(backgroundColor);
         else
-            graphics.setColor(Color.black);
+            graphics.setColor(new Color(255, 255, 255, 0));
         graphics.fill(bounds);
 
         int localCursorPosition = graphics.getFontMetrics().stringWidth(text.substring(0, cursorPosition));
@@ -63,7 +63,7 @@ public class UOTextField implements UOWidget, KeyListener {
         if (Objects.nonNull(foregroundColor))
             graphics.setColor(foregroundColor);
         else
-            graphics.setColor(Color.white);
+            graphics.setColor(Color.BLACK);
         Drawer.drawString(text, x, y + 4, graphics);
         if (focused)
             Drawer.drawString("|", x+localCursorPosition, y + 4, graphics);
@@ -75,7 +75,7 @@ public class UOTextField implements UOWidget, KeyListener {
         if (borderColor != null)
             graphics.setColor(borderColor);
         else
-            graphics.setColor(Color.gray);
+            graphics.setColor(new Color(255, 255, 255, 0));
         graphics.draw(bounds);
     }
 

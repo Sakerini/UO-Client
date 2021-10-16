@@ -38,25 +38,21 @@ public class LoginScreenState extends State {
     @Override
     public void init(UODisplay display) {
         try {
-            background = ImageIO.read(getClass().getResourceAsStream("/ui/login_screen_bg.jpg"));
+            background = ImageIO.read(getClass().getResourceAsStream("/ui/login_screen_bg.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         usernameTextField = new UOTextField(display, 150, 25, 6, 6);
-        usernameTextField.setBackgroundColor(new Color(0, 0, 0, 225));
-        usernameTextField.setBorderColor(Color.gray);
-        usernameTextField.setLocation(display.getWidth() / 2 - usernameTextField.getWidth() / 2, 340);
+        usernameTextField.setLocation(display.getWidth() / 2 - usernameTextField.getWidth() / 2, 625);
         usernameTextField.setFocused(true);
 
         passwordTextField = new UOTextField(display, 150, 25, 6, 6);
-        passwordTextField.setBackgroundColor(new Color(0, 0, 0, 225));
-        passwordTextField.setBorderColor(Color.gray);
-        passwordTextField.setLocation(display.getWidth() / 2 - passwordTextField.getWidth() / 2, 440);
+        passwordTextField.setLocation(display.getWidth() / 2 - passwordTextField.getWidth() / 2, 650);
         passwordTextField.setEchoChar('*');
 
         loginButton = new UOButton("Login");
-        loginButton.setLocation(display.getWidth() / 2 - loginButton.getWidth() / 2, 500);
+        loginButton.setLocation(display.getWidth() / 2 - loginButton.getWidth() / 2, passwordTextField.getY() + 25);
         loginButton.addActionListener(e -> {
             usernameTextField.setFocused(false);
             passwordTextField.setFocused(false);
@@ -69,7 +65,7 @@ public class LoginScreenState extends State {
         });
 
         quitButton = new UOButton("Quit");
-        quitButton.setLocation(display.getWidth() - quitButton.getWidth() - 25, display.getHeight() - quitButton.getHeight() - 45);
+        quitButton.setLocation(display.getWidth() - quitButton.getWidth() - 35, display.getHeight() - quitButton.getHeight() - 35);
         quitButton.addActionListener(e ->
                 display.exit());
 
@@ -116,26 +112,20 @@ public class LoginScreenState extends State {
     public void render(UOEngine engine, UODisplay display, Graphics2D graphics) {
         Drawer.drawImage(background, 0, 0, display.getWidth(), display.getHeight(), graphics);
         renderLoginUI(engine, display, graphics);
-        graphics.setColor(new Color(223, 195, 15));
-        Drawer.drawString("Version: " + UODisplay.version, 0, display.getHeight() - graphics.getFontMetrics().getHeight(), graphics);
-        Drawer.drawString("2021@NOETIC", display.getWidth() / 2 - graphics.getFontMetrics().stringWidth("copyright2") / 2,
-                display.getHeight() - graphics.getFontMetrics().getHeight(), graphics);
+        graphics.setColor(Color.BLACK);
+        Drawer.drawString("Version: " + UODisplay.version, 20, display.getHeight() - graphics.getFontMetrics().getHeight(), graphics);
         quitButton.render(engine, display, graphics);
     }
 
     private void renderLoginUI(UOEngine engine, UODisplay display, Graphics2D graphics) {
         //todo set font
         graphics.setColor(Color.BLACK);
-        int position = display.getWidth() / 2 - graphics.getFontMetrics().stringWidth("Account Name") / 2;
-        Drawer.drawString("Account Name", position + 2, 302, graphics);
-        graphics.setColor(new Color(223, 195, 15));
-        Drawer.drawString("Account Name", position, 300, graphics);
+        graphics.setColor(Color.BLACK);
+        Drawer.drawString("Account Name:", usernameTextField.getX() - 100, usernameTextField.getY() + 4, graphics);
 
         graphics.setColor(Color.BLACK);
-        position = display.getWidth() / 2 - graphics.getFontMetrics().stringWidth("Account Password") / 2;
-        Drawer.drawString("Account Password", position + 2, 402, graphics);
-        graphics.setColor(new Color(223, 195, 15));
-        Drawer.drawString("Account Password", position, 400, graphics);
+        graphics.setColor(Color.BLACK);
+        Drawer.drawString("Password:", passwordTextField.getX() - 100, passwordTextField.getY() + 4, graphics);
 
         usernameTextField.render(engine, display, graphics);
         passwordTextField.render(engine, display, graphics);

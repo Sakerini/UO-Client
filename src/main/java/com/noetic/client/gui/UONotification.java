@@ -35,12 +35,12 @@ public class UONotification implements UOWidget {
     public void render(UOEngine engine, UODisplay display, Graphics2D graphics) {
         //todo set font
 
-        graphics.setColor(new Color(0, 0, 0, 235));
+        graphics.setColor(new Color(255, 255, 255, 235));
         graphics.fill(box);
         graphics.setColor(Color.gray);
         graphics.draw(box);
 
-        graphics.setColor(new Color(223, 195, 15));
+        graphics.setColor(Color.BLACK);
         Drawer.drawCenteredString(message, x, y, width, height, graphics);
     }
 

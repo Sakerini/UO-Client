@@ -37,34 +37,41 @@ public class CharacterSelectionState extends State{
 
     @Override
     public void init(UODisplay display) {
+        BufferedImage buttonImage = null;
         try {
             background = ImageIO.read(getClass().getResourceAsStream("/ui/character_selection.png"));
+            buttonImage = ImageIO.read(getClass().getResourceAsStream("/ui/button.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         characterSelectionPanel = new RoundRectangle2D.Double(0, 0, 225, 565, 6, 6);
         characterSelectionPanel.x = display.getWidth() - characterSelectionPanel.getWidth() - 15;
         characterSelectionPanel.y = 15;
 
         enterWorldButton = new UOButton("Enter World");
+        enterWorldButton.setEnabledButtonImage(buttonImage);
         enterWorldButton.setLocation(display.getWidth() / 2 - enterWorldButton.getWidth() / 2, display.getHeight() - enterWorldButton.getHeight() * 2);
         enterWorldButton.addActionListener(e -> {
             //todo
              });
 
         createCharacterButton = new UOButton("Create Character");
+        createCharacterButton.setEnabledButtonImage(buttonImage);
         createCharacterButton.setLocation((int)(characterSelectionPanel.x + (characterSelectionPanel.width / 2 - createCharacterButton.getWidth() / 2)), (int)(characterSelectionPanel.y + (characterSelectionPanel.height - createCharacterButton.getHeight() - 10)));
         createCharacterButton.addActionListener(e -> {
             //todo
         });
 
         deleteCharacterButton = new UOButton("Delete Character");
+        deleteCharacterButton.setEnabledButtonImage(buttonImage);
         deleteCharacterButton.setLocation(createCharacterButton.getX(), enterWorldButton.getY() - deleteCharacterButton.getHeight() * 2);
         deleteCharacterButton.addActionListener(e -> {
             //todo
         });
 
         backButton = new UOButton("Back");
+        backButton.setEnabledButtonImage(buttonImage);
         backButton.setLocation(deleteCharacterButton.getX(), enterWorldButton.getY());
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
