@@ -5,6 +5,7 @@ import com.noetic.client.UOEngine;
 import com.noetic.client.gui.UONotification;
 import com.noetic.client.gui.UONotificationConfirmation;
 import com.noetic.client.network.connections.AuthConnection;
+import com.noetic.client.states.CharacterSelectionState;
 import com.noetic.client.states.LoginScreenState;
 import com.noetic.client.utils.NetworkUtil;
 
@@ -48,6 +49,7 @@ public class NotificationHandler {
                     break;
                 case OK:
                     showConfirmNotification(display, "Authentication Succes");
+                    display.enterState(CharacterSelectionState.ID);
                     break;
                 case ALREADY_ONLINE:
                     showConfirmNotification(display, "Account is already online.");

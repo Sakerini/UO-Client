@@ -1,6 +1,7 @@
 package com.noetic.client;
 
 import com.noetic.client.handlers.InputHandler;
+import com.noetic.client.states.CharacterSelectionState;
 import com.noetic.client.states.LoginScreenState;
 import com.noetic.client.states.State;
 import com.noetic.client.utils.Configuration;
@@ -57,6 +58,7 @@ public class UODisplay {
         canvas.requestFocus();
 
         addState(new LoginScreenState());
+        addState(new CharacterSelectionState());
         activeState = states.get(0);
         frame.setVisible(true);
     }
@@ -73,6 +75,17 @@ public class UODisplay {
             }
         }
         states.add(state);
+    }
+
+    public void enterState(int id) {
+        for (State state : states) {
+            if (state.getId() == id) {
+                activeState = state;
+            }
+            state.OnStateTransition(this);
+        }
+        if (activeState == null || activeState.getId() != id)
+            System.err.println("Unable to enter game-state with id: "+id+" - missing state.");
     }
 
     public void initStatesOnNewThread() {
