@@ -114,6 +114,8 @@ public class CharacterSelectionState extends State{
 
     @Override
     public void render(UOEngine engine, UODisplay display, Graphics2D graphics) {
+        graphics.setColor(Color.GRAY);
+        graphics.fillRect(0, 0, display.getWidth(), display.getHeight());
         Drawer.drawImage(background, 0, 0, display.getWidth() - (int) characterSelectionPanel.getWidth() - 20, display.getHeight() - 20, graphics);
         graphics.setColor(Color.gray);
         Stroke oldStroke = graphics.getStroke();

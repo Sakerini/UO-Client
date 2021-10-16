@@ -79,7 +79,7 @@ public class UOButton implements UOWidget {
 
         if (enabled) {
             if (hovering)
-                graphics.setColor(Color.WHITE);
+                graphics.setColor(Color.GRAY);
             else
                 graphics.setColor(Color.BLACK);
         } else
