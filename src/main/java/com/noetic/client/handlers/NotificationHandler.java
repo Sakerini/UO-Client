@@ -36,9 +36,9 @@ public class NotificationHandler {
             AuthStatus status = NetworkUtil.getAuthConnection().getStatus();
 
             if (status.equals(AuthStatus.CharacterCreateServerError)) {
-                showBasicNotification(display, "Server error occured.");
+                showConfirmNotification(display, "Server error occured.");
             } else if (status.equals(AuthStatus.CharacterCreateExists)) {
-                showBasicNotification(display, "Unable to create character.\nPlease try again.");
+                showConfirmNotification(display, "Unable to create character.\nPlease try again.");
             } else if (status.equals(AuthStatus.CharacterCreateOk)) {
                 NetworkUtil.getAuthConnection().setStatus(AuthStatus.Waiting);
                 display.enterState(CharacterSelectionState.ID);
