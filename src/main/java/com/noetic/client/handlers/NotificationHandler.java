@@ -2,9 +2,11 @@ package com.noetic.client.handlers;
 
 import com.noetic.client.UODisplay;
 import com.noetic.client.UOEngine;
+import com.noetic.client.enums.AuthStatus;
 import com.noetic.client.gui.UONotification;
 import com.noetic.client.gui.UONotificationConfirmation;
 import com.noetic.client.network.connections.AuthConnection;
+import com.noetic.client.states.CharacterCreationState;
 import com.noetic.client.states.CharacterSelectionState;
 import com.noetic.client.states.LoginScreenState;
 import com.noetic.client.utils.NetworkUtil;
@@ -23,6 +25,29 @@ public class NotificationHandler {
     public static void handle(int stateId, UOEngine engine, UODisplay display, Graphics2D graphics) {
         if (stateId == LoginScreenState.ID) {
             handleLoginScreenNotifications(engine, display, graphics);
+        } else if (stateId == CharacterCreationState.ID) {
+            handleCreationCharacterNotifications(engine, display, graphics);
+        }
+    }
+
+    private static void handleCreationCharacterNotifications(UOEngine engine, UODisplay display, Graphics2D graphics) {
+        AuthConnection connection = NetworkUtil.getAuthConnection();
+        if (Objects.nonNull(connection) && Objects.nonNull(connection.getClient())) {
+            AuthStatus status = NetworkUtil.getAuthConnection().getStatus();
+
+            if (status.equals(AuthStatus.CharacterCreateServerError)) {
+                showBasicNotification(display, "Server error occured.");
+            } else if (status.equals(AuthStatus.CharacterCreateExists)) {
+                showBasicNotification(display, "Unable to create character.\nPlease try again.");
+            } else if (status.equals(AuthStatus.CharacterCreateOk)) {
+                NetworkUtil.getAuthConnection().setStatus(AuthStatus.Waiting);
+                display.enterState(CharacterSelectionState.ID);
+            }
+
+            if (notificationConfirmation != null) {
+                notificationConfirmation.tick(engine, display, 0);
+                notificationConfirmation.render(engine, display, graphics);
+            }
         }
     }
 
@@ -48,7 +73,9 @@ public class NotificationHandler {
                             "Invalid username/password combination.\nPlease try again or contact a developer.");
                     break;
                 case OK:
-                    showConfirmNotification(display, "Authentication Succes");
+                    connection.setStatus(AuthStatus.Waiting);
+                    notificationConfirmation = null;
+                    notification = null;
                     display.enterState(CharacterSelectionState.ID);
                     break;
                 case ALREADY_ONLINE:

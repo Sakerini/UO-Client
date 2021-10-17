@@ -2,8 +2,14 @@ package com.noetic.client.states;
 
 import com.noetic.client.UODisplay;
 import com.noetic.client.UOEngine;
+import com.noetic.client.enums.AuthStatus;
+import com.noetic.client.enums.GenderType;
+import com.noetic.client.enums.PacketDirection;
 import com.noetic.client.gui.UOButton;
+import com.noetic.client.handlers.GameDataHandler;
 import com.noetic.client.handlers.InputHandler;
+import com.noetic.client.models.GameCharacter;
+import com.noetic.client.network.packets.CharacterListCSPacket;
 import com.noetic.client.utils.Drawer;
 import com.noetic.client.utils.NetworkUtil;
 
@@ -14,8 +20,9 @@ import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
-public class CharacterSelectionState extends State{
+public class CharacterSelectionState extends State {
     public static final int ID = 1;
 
     private BufferedImage background;
@@ -54,11 +61,11 @@ public class CharacterSelectionState extends State{
         enterWorldButton.setLocation(display.getWidth() / 2 - enterWorldButton.getWidth() / 2, display.getHeight() - enterWorldButton.getHeight() * 2);
         enterWorldButton.addActionListener(e -> {
             //todo
-             });
+        });
 
         createCharacterButton = new UOButton("Create Character");
         createCharacterButton.setEnabledButtonImage(buttonImage);
-        createCharacterButton.setLocation((int)(characterSelectionPanel.x + (characterSelectionPanel.width / 2 - createCharacterButton.getWidth() / 2)), (int)(characterSelectionPanel.y + (characterSelectionPanel.height - createCharacterButton.getHeight() - 10)));
+        createCharacterButton.setLocation((int) (characterSelectionPanel.x + (characterSelectionPanel.width / 2 - createCharacterButton.getWidth() / 2)), (int) (characterSelectionPanel.y + (characterSelectionPanel.height - createCharacterButton.getHeight() - 10)));
         createCharacterButton.addActionListener(e -> {
             display.enterState(CharacterCreationState.ID);
         });
@@ -89,12 +96,11 @@ public class CharacterSelectionState extends State{
                 characterPortraits[i].y = (int) characterSelectionPanel.y + 25;
             } else {
                 characterPortraits[i].x = characterPortraits[0].x;
-                characterPortraits[i].y = characterPortraits[i-1].y + characterPortraits[i-1].height + 10;
+                characterPortraits[i].y = characterPortraits[i - 1].y + characterPortraits[i - 1].height + 10;
             }
         }
 
         characterSelector = new RoundRectangle2D.Double(0, 0, 195, 50, 6, 6);
-
     }
 
     @Override
@@ -104,12 +110,38 @@ public class CharacterSelectionState extends State{
 
     @Override
     public void tick(UOEngine engine, UODisplay display, double delta) {
-        boolean characterListRequest = false;
+        if (GameDataHandler.getCharacters().size() < 1)
+            selectedIndex = -1;
+
+        if (GameDataHandler.getCharacters().size() > 0) {
+            if (characterSelector.x == 0.0 && characterSelector.y == 0.0) {
+                characterSelector.x = characterPortraits[0].x;
+                characterSelector.y = characterPortraits[0].y;
+                selectedIndex = 0;
+            }
+        }
 
         enterWorldButton.tick(engine, display, delta);
         createCharacterButton.tick(engine, display, delta);
         deleteCharacterButton.tick(engine, display, delta);
         backButton.tick(engine, display, delta);
+
+        InputHandler input = display.getInput();
+
+        if (input.isMouseButtonPressed(InputHandler.MOUSE_LEFT)) {
+            for (int i = 0; i < characterPortraits.length; i++) {
+                RoundRectangle2D.Double r = characterPortraits[i];
+                if (r.contains(input.getMousePosition())) {
+                    if (Objects.nonNull(GameDataHandler.getCharacters())) {
+                        if (Objects.nonNull(GameDataHandler.getCharacters().get(i))) {
+                            characterSelector.x = r.x;
+                            characterSelector.y = r.y;
+                            selectedIndex = i;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -132,10 +164,35 @@ public class CharacterSelectionState extends State{
             graphics.setColor(Color.yellow);
             graphics.draw(characterSelector);
         }
+
+        if (Objects.nonNull(GameDataHandler.getCharacters())) {
+            int size = GameDataHandler.getCharacters().size();
+            if (size > 0) {
+                for (int i = 0; i < size; i++) {
+                    GameCharacter character = GameDataHandler.getCharacters().get(i);
+
+                    //todo setfont
+                    graphics.setColor(new Color(223, 195, 15));
+                    Drawer.drawString(character.getName(), (float)characterPortraits[i].x + 5, (float)characterPortraits[i].y, graphics);
+                    //todo setfont 13f
+                    graphics.setColor(Color.white);
+                    Drawer.drawString("level 1", (float)characterPortraits[i].x + 5, (float)characterPortraits[i].y + graphics.getFontMetrics().getHeight() + 4, graphics);
+                }
+            }
+        }
+
+        if (selectedIndex > -1) {
+            GenderType gender = GameDataHandler.getCharacters().get(selectedIndex).getGender();
+            if (gender != null) {
+                BufferedImage sprite = gender.getSpritesheet().getSubImage(1, 0, 77, 82);
+                Drawer.drawImage(sprite, display.getWidth() / 2 - sprite.getWidth() / 2 - 105, display.getHeight() / 2 - sprite.getHeight() / 2 - 70, 330, 400, graphics);
+            }
+        }
     }
 
     @Override
     public void OnStateTransition(UODisplay display) {
-
+        NetworkUtil.getAuthConnection().setStatus(AuthStatus.CharacterList);
+        NetworkUtil.sendSimplePacket(PacketDirection.Auth, new CharacterListCSPacket());
     }
 }

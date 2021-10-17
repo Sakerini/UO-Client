@@ -7,6 +7,7 @@ import com.noetic.client.gui.UOButton;
 import com.noetic.client.gui.UOCharacterOptionPanel;
 import com.noetic.client.gui.UOTextField;
 import com.noetic.client.utils.Drawer;
+import com.noetic.client.utils.NetworkUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -49,7 +50,10 @@ public class CharacterCreationState extends State {
         acceptCharacterButton.setEnabledButtonImage(buttonImage);
         acceptCharacterButton.setLocation(display.getWidth() - acceptCharacterButton.getWidth() - 15, nameTextField.getY());
         acceptCharacterButton.addActionListener(event -> {
-            //todo
+            String name = nameTextField.getText().trim();
+            int genderId = optionPanel.getSelectedGender().getId();
+
+            NetworkUtil.sendCharacterCreationPacket(name, genderId);
         });
 
         backButton = new UOButton("Back");
