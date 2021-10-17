@@ -104,13 +104,6 @@ public class UOEngine implements Runnable {
         }
 
         Graphics2D graphics = (Graphics2D) bs.getDrawGraphics();
-        RenderingHints rh =
-                new RenderingHints(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-
-        rh.put(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
-        graphics.setRenderingHints(rh);
 
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, display.getWidth(), display.getHeight());

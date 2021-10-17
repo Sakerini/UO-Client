@@ -60,7 +60,7 @@ public class CharacterSelectionState extends State{
         createCharacterButton.setEnabledButtonImage(buttonImage);
         createCharacterButton.setLocation((int)(characterSelectionPanel.x + (characterSelectionPanel.width / 2 - createCharacterButton.getWidth() / 2)), (int)(characterSelectionPanel.y + (characterSelectionPanel.height - createCharacterButton.getHeight() - 10)));
         createCharacterButton.addActionListener(e -> {
-            //todo
+            display.enterState(CharacterCreationState.ID);
         });
 
         deleteCharacterButton = new UOButton("Delete Character");
@@ -114,9 +114,7 @@ public class CharacterSelectionState extends State{
 
     @Override
     public void render(UOEngine engine, UODisplay display, Graphics2D graphics) {
-        graphics.setColor(Color.GRAY);
-        graphics.fillRect(0, 0, display.getWidth(), display.getHeight());
-        Drawer.drawImage(background, 0, 0, display.getWidth() - (int) characterSelectionPanel.getWidth() - 20, display.getHeight() - 20, graphics);
+        Drawer.drawImage(background, 0, 0, display.getWidth(), display.getHeight(), graphics);
         graphics.setColor(Color.gray);
         Stroke oldStroke = graphics.getStroke();
         graphics.setStroke(new BasicStroke(2));

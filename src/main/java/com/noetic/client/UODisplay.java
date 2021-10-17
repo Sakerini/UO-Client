@@ -1,6 +1,7 @@
 package com.noetic.client;
 
 import com.noetic.client.handlers.InputHandler;
+import com.noetic.client.states.CharacterCreationState;
 import com.noetic.client.states.CharacterSelectionState;
 import com.noetic.client.states.LoginScreenState;
 import com.noetic.client.states.State;
@@ -61,6 +62,7 @@ public class UODisplay {
 
         addState(new LoginScreenState());
         addState(new CharacterSelectionState());
+        addState(new CharacterCreationState());
         activeState = states.get(0);
         frame.setVisible(true);
     }
