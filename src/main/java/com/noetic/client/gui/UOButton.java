@@ -24,6 +24,7 @@ public class UOButton implements UOWidget {
     private BufferedImage disabledButtonImage;
 
     private String text;
+    private Color textColor = Color.BLACK;
     private int x, y;
     private int width, height;
 
@@ -81,7 +82,7 @@ public class UOButton implements UOWidget {
             if (hovering)
                 graphics.setColor(Color.GRAY);
             else
-                graphics.setColor(Color.BLACK);
+                graphics.setColor(textColor);
         } else
             graphics.setColor(Color.gray);
         Drawer.drawCenteredString(text, x, y, width, height, graphics);

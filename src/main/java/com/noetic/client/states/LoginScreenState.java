@@ -37,22 +37,29 @@ public class LoginScreenState extends State {
 
     @Override
     public void init(UODisplay display) {
+        BufferedImage buttonImage = null;
         try {
-            background = ImageIO.read(getClass().getResourceAsStream("/ui/login_screen_bg.png"));
+            background = ImageIO.read(getClass().getResourceAsStream("/ui/login_screen_bg.jpg"));
+            buttonImage = ImageIO.read(getClass().getResourceAsStream("/ui/button.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         usernameTextField = new UOTextField(display, 150, 25, 6, 6);
-        usernameTextField.setLocation(display.getWidth() / 2 - usernameTextField.getWidth() / 2, 625);
+        usernameTextField.setBackgroundColor(new Color(0, 0, 0, 225));
+        usernameTextField.setForegroundColor(Color.WHITE);
+        usernameTextField.setLocation(display.getWidth() / 2 - usernameTextField.getWidth() / 2, 400);
         usernameTextField.setFocused(true);
 
         passwordTextField = new UOTextField(display, 150, 25, 6, 6);
-        passwordTextField.setLocation(display.getWidth() / 2 - passwordTextField.getWidth() / 2, 650);
+        passwordTextField.setBackgroundColor(new Color(0, 0, 0));
+        passwordTextField.setForegroundColor(Color.WHITE);
+        passwordTextField.setLocation(display.getWidth() / 2 - passwordTextField.getWidth() / 2, 460);
         passwordTextField.setEchoChar('*');
 
         loginButton = new UOButton("Login");
-        loginButton.setLocation(display.getWidth() / 2 - loginButton.getWidth() / 2, passwordTextField.getY() + 25);
+        loginButton.setEnabledButtonImage(buttonImage);
+        loginButton.setLocation(display.getWidth() / 2 - loginButton.getWidth() / 2, passwordTextField.getY() + 40);
         loginButton.addActionListener(e -> {
             usernameTextField.setFocused(false);
             passwordTextField.setFocused(false);
@@ -65,6 +72,7 @@ public class LoginScreenState extends State {
         });
 
         quitButton = new UOButton("Quit");
+        quitButton.setEnabledButtonImage(buttonImage);
         quitButton.setLocation(display.getWidth() - quitButton.getWidth() - 35, display.getHeight() - quitButton.getHeight() - 35);
         quitButton.addActionListener(e ->
                 display.exit());
@@ -112,20 +120,19 @@ public class LoginScreenState extends State {
     public void render(UOEngine engine, UODisplay display, Graphics2D graphics) {
         Drawer.drawImage(background, 0, 0, display.getWidth(), display.getHeight(), graphics);
         renderLoginUI(engine, display, graphics);
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Color.WHITE);
         Drawer.drawString("Version: " + UODisplay.version, 20, display.getHeight() - graphics.getFontMetrics().getHeight(), graphics);
+        Drawer.drawString("2021@NOETIC", display.getWidth() / 2 - graphics.getFontMetrics().stringWidth("2021@NOETIC") / 2, display.getHeight() - graphics.getFontMetrics().getHeight(), graphics);
+
         quitButton.render(engine, display, graphics);
     }
 
     private void renderLoginUI(UOEngine engine, UODisplay display, Graphics2D graphics) {
-        //todo set font
-        graphics.setColor(Color.BLACK);
-        graphics.setColor(Color.BLACK);
-        Drawer.drawString("Account Name:", usernameTextField.getX() - 100, usernameTextField.getY() + 4, graphics);
-
-        graphics.setColor(Color.BLACK);
-        graphics.setColor(Color.BLACK);
-        Drawer.drawString("Password:", passwordTextField.getX() - 100, passwordTextField.getY() + 4, graphics);
+        graphics.setFont(display.getFont());
+        graphics.setColor(Color.WHITE);
+        Drawer.drawString("Account Name", usernameTextField.getX() + 27 , usernameTextField.getY() - 25, graphics);
+        graphics.setColor(Color.WHITE);
+        Drawer.drawString("Password", passwordTextField.getX() + 40, passwordTextField.getY() -25, graphics);
 
         usernameTextField.render(engine, display, graphics);
         passwordTextField.render(engine, display, graphics);

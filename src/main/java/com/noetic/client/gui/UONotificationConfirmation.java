@@ -6,8 +6,11 @@ import com.noetic.client.utils.Drawer;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 @Getter
 @Setter
@@ -25,6 +28,11 @@ public class UONotificationConfirmation implements UOWidget {
         this.message = message;
         this.box = new Rectangle2D.Double(0, 0, 450, 120);
         this.button = new UOButton("Okay");
+        try {
+            button.setEnabledButtonImage(ImageIO.read(getClass().getResourceAsStream("/ui/button.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         width = (int) box.getWidth();
         height = (int) box.getHeight();
     }
@@ -37,12 +45,12 @@ public class UONotificationConfirmation implements UOWidget {
     @Override
     public void render(UOEngine engine, UODisplay display, Graphics2D graphics) {
         //todo add font
-        graphics.setColor(new Color(255, 255, 255, 235));
+        graphics.setColor(new Color(0, 0, 0, 235));
         graphics.fill(box);
         graphics.setColor(Color.gray);
         graphics.draw(box);
 
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Color.WHITE);
         if (message.contains("\n")) {
             String[] strSplit = message.split("\n");
             for (int i = 0; i < strSplit.length; i++) {
