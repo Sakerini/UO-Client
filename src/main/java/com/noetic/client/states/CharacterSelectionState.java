@@ -173,10 +173,10 @@ public class CharacterSelectionState extends State {
 
                     //todo setfont
                     graphics.setColor(new Color(223, 195, 15));
-                    Drawer.drawString(character.getName(), (float)characterPortraits[i].x + 5, (float)characterPortraits[i].y, graphics);
+                    Drawer.drawString(character.getName(), (float) characterPortraits[i].x + 5, (float) characterPortraits[i].y, graphics);
                     //todo setfont 13f
                     graphics.setColor(Color.white);
-                    Drawer.drawString("level 1", (float)characterPortraits[i].x + 5, (float)characterPortraits[i].y + graphics.getFontMetrics().getHeight() + 4, graphics);
+                    Drawer.drawString("level 1", (float) characterPortraits[i].x + 5, (float) characterPortraits[i].y + graphics.getFontMetrics().getHeight() + 4, graphics);
                 }
             }
         }
