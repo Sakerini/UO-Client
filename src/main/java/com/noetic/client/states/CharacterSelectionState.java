@@ -9,6 +9,7 @@ import com.noetic.client.gui.UOButton;
 import com.noetic.client.handlers.GameDataHandler;
 import com.noetic.client.handlers.InputHandler;
 import com.noetic.client.models.GameCharacter;
+import com.noetic.client.network.Network;
 import com.noetic.client.network.packets.CharacterListCSPacket;
 import com.noetic.client.utils.Drawer;
 import com.noetic.client.utils.NetworkUtil;
@@ -60,7 +61,8 @@ public class CharacterSelectionState extends State {
         enterWorldButton.setEnabledButtonImage(buttonImage);
         enterWorldButton.setLocation(display.getWidth() / 2 - enterWorldButton.getWidth() / 2, display.getHeight() - enterWorldButton.getHeight() * 2);
         enterWorldButton.addActionListener(e -> {
-            //todo
+            GameDataHandler.characterInUse = GameDataHandler.getCharacters().get(selectedIndex);
+            NetworkUtil.connectToWorld();
         });
 
         createCharacterButton = new UOButton("Create Character");
@@ -110,7 +112,7 @@ public class CharacterSelectionState extends State {
 
     @Override
     public void tick(UOEngine engine, UODisplay display, double delta) {
-        if (GameDataHandler.getCharacters().size() < 1)
+        if (Objects.requireNonNull(GameDataHandler.getCharacters()).size() < 1)
             selectedIndex = -1;
 
         if (GameDataHandler.getCharacters().size() > 0) {

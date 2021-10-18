@@ -80,7 +80,7 @@ public class UOEngine implements Runnable {
                 frames = 0;
                 ticks = 0;
 
-                Logger.getLogger("server").log(Level.INFO, "Rendered frames {0}", renderedFps);
+                //Logger.getLogger("server").log(Level.INFO, "Rendered frames {0}", renderedFps);
             }
         }
     }

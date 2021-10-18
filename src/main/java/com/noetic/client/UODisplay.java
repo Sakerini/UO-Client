@@ -1,18 +1,13 @@
 package com.noetic.client;
 
 import com.noetic.client.handlers.InputHandler;
-import com.noetic.client.states.CharacterCreationState;
-import com.noetic.client.states.CharacterSelectionState;
-import com.noetic.client.states.LoginScreenState;
-import com.noetic.client.states.State;
+import com.noetic.client.states.*;
 import com.noetic.client.utils.Configuration;
 import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +58,8 @@ public class UODisplay {
         addState(new LoginScreenState());
         addState(new CharacterSelectionState());
         addState(new CharacterCreationState());
+        addState(new LoadingState());
+        addState(new GameState());
         activeState = states.get(0);
         frame.setVisible(true);
     }
@@ -85,8 +82,9 @@ public class UODisplay {
         for (State state : states) {
             if (state.getId() == id) {
                 activeState = state;
+                state.OnStateTransition(this);
+                break;
             }
-            state.OnStateTransition(this);
         }
         if (activeState == null || activeState.getId() != id)
             System.err.println("Unable to enter game-state with id: "+id+" - missing state.");

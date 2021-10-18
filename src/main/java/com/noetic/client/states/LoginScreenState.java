@@ -4,6 +4,7 @@ import com.noetic.client.UODisplay;
 import com.noetic.client.UOEngine;
 import com.noetic.client.gui.UOButton;
 import com.noetic.client.gui.UOTextField;
+import com.noetic.client.handlers.GameDataHandler;
 import com.noetic.client.handlers.InputHandler;
 import com.noetic.client.utils.Drawer;
 import com.noetic.client.utils.NetworkUtil;
@@ -68,6 +69,7 @@ public class LoginScreenState extends State {
             usernameTextField.setText("");
             passwordTextField.setText("");
 
+            GameDataHandler.accountName = username;
             NetworkUtil.authorize(username, password);
         });
 

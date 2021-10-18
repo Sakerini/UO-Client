@@ -8,12 +8,11 @@ import com.noetic.client.gui.UONotificationConfirmation;
 import com.noetic.client.network.connections.AuthConnection;
 import com.noetic.client.states.CharacterCreationState;
 import com.noetic.client.states.CharacterSelectionState;
+import com.noetic.client.states.LoadingState;
 import com.noetic.client.states.LoginScreenState;
 import com.noetic.client.utils.NetworkUtil;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Objects;
 
 public class NotificationHandler {
@@ -27,6 +26,27 @@ public class NotificationHandler {
             handleLoginScreenNotifications(engine, display, graphics);
         } else if (stateId == CharacterCreationState.ID) {
             handleCreationCharacterNotifications(engine, display, graphics);
+        } else if (stateId == CharacterSelectionState.ID) {
+            handleCharacterSelectionNotification(engine, display, graphics);
+        }
+    }
+
+    private static void handleCharacterSelectionNotification(UOEngine engine, UODisplay display, Graphics2D graphics2D) {
+        AuthConnection connection = NetworkUtil.getAuthConnection();
+        if (Objects.nonNull(connection) && Objects.nonNull(connection.getClient())) {
+            AuthStatus status = NetworkUtil.getAuthConnection().getStatus();
+
+            if (status.equals(AuthStatus.CharacterList)) {
+                showBasicNotification(display, "Retrieving character list...");
+            } else if (status.equals(AuthStatus.World)) {
+                display.enterState(LoadingState.ID);
+            } else if (status.equals(AuthStatus.Waiting)) {
+                notification = null;
+            }
+
+            if (notification != null) {
+                notification.render(engine, display, graphics2D);
+            }
         }
     }
 

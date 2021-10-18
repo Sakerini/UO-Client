@@ -3,6 +3,7 @@ package com.noetic.client.network.handlers;
 import com.esotericsoftware.kryonet.Connection;
 import com.noetic.client.enums.AuthStatus;
 import com.noetic.client.enums.GenderType;
+import com.noetic.client.enums.Zone;
 import com.noetic.client.handlers.GameDataHandler;
 import com.noetic.client.models.GameCharacter;
 import com.noetic.client.network.packets.*;
@@ -32,7 +33,11 @@ public class CharacterHandler implements PacketHandler {
             for (CharacterSCPacket c : characters) {
                 GameCharacter gameCharacter = new GameCharacter();
                 gameCharacter.setName(c.name);
-                gameCharacter.setZone(c.zone);
+                for (Zone z: Zone.values()) {
+                    if (z.getId() == c.zone) {
+                        gameCharacter.setZone(z);
+                    }
+                }
 
                 for (GenderType g : GenderType.values()) {
                     if (c.gender == g.getId()) {
