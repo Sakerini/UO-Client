@@ -5,11 +5,11 @@ import com.noetic.client.UOEngine;
 import com.noetic.client.enums.AuthStatus;
 import com.noetic.client.enums.GenderType;
 import com.noetic.client.enums.PacketDirection;
+import com.noetic.client.gfx.Spritesheet;
 import com.noetic.client.gui.UOButton;
 import com.noetic.client.handlers.GameDataHandler;
 import com.noetic.client.handlers.InputHandler;
 import com.noetic.client.models.GameCharacter;
-import com.noetic.client.network.Network;
 import com.noetic.client.network.packets.CharacterListCSPacket;
 import com.noetic.client.utils.Drawer;
 import com.noetic.client.utils.NetworkUtil;
@@ -186,7 +186,8 @@ public class CharacterSelectionState extends State {
         if (selectedIndex > -1) {
             GenderType gender = GameDataHandler.getCharacters().get(selectedIndex).getGender();
             if (gender != null) {
-                BufferedImage sprite = gender.getSpritesheet().getSubImage(1, 0, 77, 82);
+                BufferedImage genderSprite = Spritesheet.getSpriteImage(gender, 0, 0);
+                BufferedImage sprite = Spritesheet.getSinglePositionSprite(genderSprite, 1, 0);
                 Drawer.drawImage(sprite, display.getWidth() / 2 - sprite.getWidth() / 2 - 105, display.getHeight() / 2 - sprite.getHeight() / 2 - 70, 330, 400, graphics);
             }
         }

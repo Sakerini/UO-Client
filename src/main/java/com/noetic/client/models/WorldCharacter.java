@@ -4,10 +4,12 @@ import com.noetic.client.UODisplay;
 import com.noetic.client.UOEngine;
 import com.noetic.client.enums.GenderType;
 import com.noetic.client.gfx.Animation;
+import com.noetic.client.gfx.Spritesheet;
 import com.noetic.client.utils.NetworkUtil;
 import com.noetic.client.utils.PlayerController;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class WorldCharacter extends Player {
     private PlayerController controller;
@@ -21,28 +23,29 @@ public class WorldCharacter extends Player {
     @Override
     public void initAnimations() {
         northAnimation = new Animation();
-        northAnimation.addFrame(gender.getSpritesheet().getSubImage(1, 3, 32, 32), 12);
-        northAnimation.addFrame(gender.getSpritesheet().getSubImage(2, 3, 32, 32), 12);
-        northAnimation.addFrame(gender.getSpritesheet().getSubImage(1, 3, 32, 32), 12);
-        northAnimation.addFrame(gender.getSpritesheet().getSubImage(0, 3, 32, 32), 12);
+        BufferedImage genderSprite = Spritesheet.getSpriteImage(gender, 0, 0);
+        northAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 1, 3), 12);
+        northAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 2, 3), 12);
+        northAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 1, 3), 12);
+        northAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 0, 3), 12);
 
         eastAnimation = new Animation();
-        eastAnimation.addFrame(gender.getSpritesheet().getSubImage(1, 2, 32, 32), 12);
-        eastAnimation.addFrame(gender.getSpritesheet().getSubImage(2, 2, 32, 32), 12);
-        eastAnimation.addFrame(gender.getSpritesheet().getSubImage(1, 2, 32, 32), 12);
-        eastAnimation.addFrame(gender.getSpritesheet().getSubImage(0, 2, 32, 32), 12);
+        eastAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 1, 2), 12);
+        eastAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 2, 2), 12);
+        eastAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 1, 2), 12);
+        eastAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 0, 2), 12);
 
         southAnimation = new Animation();
-        southAnimation.addFrame(gender.getSpritesheet().getSubImage(1, 0, 32, 32), 12);
-        southAnimation.addFrame(gender.getSpritesheet().getSubImage(2, 0, 32, 32), 12);
-        southAnimation.addFrame(gender.getSpritesheet().getSubImage(1, 0, 32, 32), 12);
-        southAnimation.addFrame(gender.getSpritesheet().getSubImage(0, 0, 32, 32), 12);
+        southAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 1, 0), 12);
+        southAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 2, 0), 12);
+        southAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 1, 0), 12);
+        southAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 0, 0), 12);
 
         westAnimation = new Animation();
-        westAnimation.addFrame(gender.getSpritesheet().getSubImage(1, 1, 32, 32), 12);
-        westAnimation.addFrame(gender.getSpritesheet().getSubImage(2, 1, 32, 32), 12);
-        westAnimation.addFrame(gender.getSpritesheet().getSubImage(1, 1, 32, 32), 12);
-        westAnimation.addFrame(gender.getSpritesheet().getSubImage(0, 1, 32, 32), 12);
+        westAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 1, 1), 12);
+        westAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 2, 1), 12);
+        westAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 1, 1), 12);
+        westAnimation.addFrame(Spritesheet.getSinglePositionSprite(genderSprite, 0, 1), 12);
     }
 
     @Override

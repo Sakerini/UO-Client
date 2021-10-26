@@ -3,6 +3,7 @@ package com.noetic.client.states;
 import com.noetic.client.UODisplay;
 import com.noetic.client.UOEngine;
 import com.noetic.client.enums.GenderType;
+import com.noetic.client.gfx.Spritesheet;
 import com.noetic.client.gui.UOButton;
 import com.noetic.client.gui.UOCharacterOptionPanel;
 import com.noetic.client.gui.UOTextField;
@@ -87,11 +88,19 @@ public class CharacterCreationState extends State {
         /** Get the current selected race and render it's first "idle" image. **/
         GenderType gender = optionPanel.getSelectedGender();
         if (gender != null) {
-            BufferedImage sprite = null;
-            sprite = gender.getSpritesheet().getSubImage(1, 0, 77, 82);
+            BufferedImage genderSprite = Spritesheet.getSpriteImage(gender, 1, 0);
+
+            BufferedImage sprite = Spritesheet.getSinglePositionSprite(genderSprite, 1, 0);
             Drawer.drawImage(sprite,
                     display.getWidth() / 2 - sprite.getWidth() / 2 - 100,
                     display.getHeight() / 2 - sprite.getHeight() / 2 - 150, 330, 400, graphics);
+
+            /*todo delete
+            Drawer.drawImage(genderSprite,
+                    display.getWidth() / 2 - genderSprite.getWidth() / 2 - 100,
+                    display.getHeight() / 2 - genderSprite.getHeight() / 2 - 150, 330, 400, graphics);
+
+             */
         }
         graphics.setColor(Color.GRAY);
         Drawer.drawString("Name", nameTextField.getX() + 65, nameTextField.getY() -25, graphics);

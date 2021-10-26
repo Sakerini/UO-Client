@@ -15,7 +15,7 @@ public class Animation {
     private int tickCounter = 0;
 
     public Animation() {
-        frames = new ArrayList<Frame>();
+        frames = new ArrayList<>();
     }
 
     public void addFrame(BufferedImage img, int duration) {
